@@ -27,6 +27,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local dev scratch (QA screenshots + throwaway loader previews)
+# local dev scratch (QA screenshots, throwaway loader previews, dev server log)
 /.shots/
 /previews/
+/dev.log

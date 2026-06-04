@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle, Star, ArrowRight, ChevronDown } from "lucide-react";
+import { MessageCircle, Star, ArrowRight, ChevronDown, ShieldCheck } from "lucide-react";
 import BookCover from "./BookCover";
 import Magnetic from "./Magnetic";
 import { books } from "@/lib/site";
@@ -95,6 +95,11 @@ export default function Hero() {
             </span>
             <span className="h-4 w-px bg-white/15" />
             <span>100% rights stay yours</span>
+            <span className="h-4 w-px bg-white/15" />
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-gold-400" />
+              Every project covered by NDA
+            </span>
           </motion.div>
         </div>
 

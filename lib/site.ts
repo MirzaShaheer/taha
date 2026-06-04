@@ -58,7 +58,12 @@ export const services: Service[] = [
     title: "Ghostwriting",
     blurb:
       "Award-winning writers turn your voice, story, or expertise into a manuscript that reads like you on your best day.",
-    bullets: ["Discovery interviews", "Chapter-by-chapter drafts", "Your voice, elevated"],
+    bullets: [
+      "Full NDA before we begin",
+      "Discovery interviews",
+      "Chapter-by-chapter drafts",
+      "Your voice, elevated",
+    ],
     icon: "PenLine",
   },
   {
@@ -235,6 +240,10 @@ export const faqs: { q: string; a: string }[] = [
   {
     q: "Do I keep all the rights and royalties to my book?",
     a: "Always. You own 100% of your rights, royalties, and creative control. We work for you behind the scenes — your name is the only one on the cover.",
+  },
+  {
+    q: "Is my story kept confidential?",
+    a: "Completely. Every client and project is covered by a full NDA, which we sign before any work begins. Your identity, your story, and the fact that we wrote it stay strictly between us — we never share, publish, or showcase your project without your written permission.",
   },
   {
     q: "How long does the whole process take?",

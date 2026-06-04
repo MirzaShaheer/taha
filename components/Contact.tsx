@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Mail, Phone, MapPin, Clock, CheckCircle2, Loader2, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, CheckCircle2, Loader2, MessageCircle, ShieldCheck } from "lucide-react";
 import Reveal from "./Reveal";
 import { site } from "@/lib/site";
 import { openChat } from "@/lib/chat-events";
@@ -181,7 +181,11 @@ export default function Contact() {
                       we&apos;ll sort it out.
                     </p>
                   )}
-                  <p className="mt-3 text-center text-xs text-cream/40">
+                  <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-cream/60">
+                    <ShieldCheck className="h-3.5 w-3.5 text-gold-400/80" />
+                    Your details and story are protected by NDA.
+                  </p>
+                  <p className="mt-2 text-center text-xs text-cream/40">
                     By submitting you agree to be contacted about your project.
                     We never share your details.
                   </p>
