@@ -5,16 +5,14 @@ import BookLoader from "./BookLoader";
 import styles from "./BookLoader.module.css";
 
 /**
- * Coordinates the entrance: plays the book loader once per session, then hands
- * off into the homepage with one continuous "fall into the open book" motion —
- * the loader scales up + fades while the site scales 1.07 → 1 and fades in.
+ * Coordinates the entrance: plays the Gilded Doors loader on EVERY load/refresh,
+ * then reveals the homepage once the doors are fully open.
  *
- * Renders children hidden on the first paint (no flash), decides on the client
- * whether to play the loader, then reveals. Honors prefers-reduced-motion and
- * skips on repeat visits within the session.
+ * Always begins at the very top (first section) on (re)load — scroll
+ * restoration is forced to "manual" so the browser never restores the prior
+ * position or jumps to a hash. Renders children hidden on first paint (no
+ * flash). Honors prefers-reduced-motion (skips the animation, shows the site).
  */
-
-const SESSION_KEY = "qc:entered:v2";
 
 type Mode = "init" | "playing" | "entering" | "shown" | "done";
 
@@ -23,6 +21,14 @@ export default function EntranceShell({ children }: { children: ReactNode }) {
   const [freeze, setFreeze] = useState<"closed" | "open" | null>(null);
 
   useEffect(() => {
+    // Always begin at the very top on every (re)load: stop the browser from
+    // restoring the previous scroll position or jumping to a hash, so the
+    // entrance starts from the first section.
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+
     // Debug: ?qcdebug=open|closed (any suffix ok, e.g. open-123 to bust cache)
     // freezes the loader for visual QA.
     const dbg = new URLSearchParams(window.location.search).get("qcdebug") ?? "";
@@ -33,40 +39,24 @@ export default function EntranceShell({ children }: { children: ReactNode }) {
       return;
     }
 
-    const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    // Accessibility always wins: reduced motion skips the animation entirely.
-    if (reduce) {
+    // Accessibility always wins: reduced motion skips the animation entirely
+    // (the site is shown immediately, still scrolled to the first section).
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setMode("shown");
       return;
     }
 
-    // In production, play once per browser session. In development, always
-    // play so the entrance can be iterated on with a simple refresh.
-    const isProd = process.env.NODE_ENV === "production";
-    const entered =
-      isProd && window.sessionStorage.getItem(SESSION_KEY) === "1";
-    if (entered) {
-      setMode("shown");
-      return;
-    }
-    if (isProd) {
-      try {
-        window.sessionStorage.setItem(SESSION_KEY, "1");
-      } catch {
-        /* private mode — fine */
-      }
-    }
+    // Play the entrance on EVERY load / refresh — no once-per-session skipping.
     document.body.classList.add("is-loading");
     setMode("playing");
   }, []);
 
-  // Keep scroll locked only while the loader is on screen.
+  // Unlock scroll once the loader leaves the screen, and make sure we land on
+  // the first section.
   useEffect(() => {
     if (mode === "done" || mode === "shown") {
       document.body.classList.remove("is-loading");
+      window.scrollTo(0, 0);
     }
   }, [mode]);
 
